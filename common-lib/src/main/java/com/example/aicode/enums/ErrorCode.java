@@ -1,0 +1,26 @@
+package com.example.aicode.enums;
+
+public enum ErrorCode {
+
+    USER_NOT_FOUND,
+
+    USER_ALREADY_EXISTS,
+
+    EMAIL_ALREADY_EXISTS,
+
+    INVALID_CREDENTIALS,
+
+    INVALID_TOKEN,
+
+    TOKEN_EXPIRED,
+
+    ACCESS_DENIED,
+
+    VALIDATION_FAILED,
+
+    RESOURCE_NOT_FOUND,
+
+    INTERNAL_SERVER_ERROR,
+    UNAUTHORIZED
+
+}

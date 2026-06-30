@@ -42,8 +42,9 @@
 
     <!-- Child Modules -->
     <modules>
-<!--        <module>api-gateway-service</module>-->
-<!--        <module>auth-service</module>-->
+        <module>common-lib</module>
+
+        <module>service/user-service</module>
 <!--        <module>project-service</module>-->
 <!--        <module>ai-orchestrator-service</module>-->
 <!--        <module>workspace-service</module>-->
@@ -63,11 +64,11 @@
                 <scope>import</scope>
             </dependency>
 
-<!--            <dependency>-->
-<!--                <groupId>com.example.job</groupId>-->
-<!--                <artifactId>job-portal-common</artifactId>-->
-<!--                <version>${project.version}</version>-->
-<!--            </dependency>-->
+            <dependency>
+                <groupId>com.example.aicode</groupId>
+                <artifactId>ai-code-common-lib</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
 
 
@@ -84,6 +85,12 @@
                 <artifactId>jjwt-jackson</artifactId>
                 <version>${jjwt.version}</version>
                 <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc.version}</version>
             </dependency>
 
             <!-- Source: https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl -->
