@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
                 .success(false)
                 .status(ex.getStatus().value())
                 .error(ex.getStatus().getReasonPhrase())
-                .errorCode(ErrorCode.INTERNAL_SERVER_ERROR)
+                .errorCode(ex.getErrorCode())
                 .message(ex.getMessage())
                 .path(request.getRequestURI())
                 .timestamp(Instant.now())
@@ -57,6 +57,27 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(response);
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<ErrorResponse> handleValidationException(
+            ValidationException ex,
+            HttpServletRequest request) {
+
+        ErrorResponse response = ErrorResponse.builder()
+                .success(false)
+                .status(ex.getStatus().value())
+                .error(ex.getStatus().getReasonPhrase())
+                .errorCode(ex.getErrorCode())
+                .message(ex.getMessage())
+                .errors(ex.getErrors())   // ✅ Populate validation errors
+                .path(request.getRequestURI())
+                .timestamp(Instant.now())
+                .build();
+
+        return ResponseEntity
+                .status(ex.getStatus())
                 .body(response);
     }
 }

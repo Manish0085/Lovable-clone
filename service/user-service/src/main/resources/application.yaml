@@ -6,7 +6,7 @@ spring:
     name: user-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/user_service
+    url: jdbc:postgresql://localhost:5441/user_service
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -35,6 +35,12 @@ management:
   endpoint:
     health:
       show-details: always
+
+jwt:
+  secret: 7A9D3B1F6C8E2A5D9F4B7C1E8A2D6F9B3C5E7A1D8F6B2C9E4A7D1F5C8B3E6A9
+  access-token-expiration: 900000      # 15 Minutes
+  refresh-token-expiration: 604800000  # 7 Days
+
 
 springdoc:
   api-docs:
