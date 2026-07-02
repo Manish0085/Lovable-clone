@@ -1,6 +1,9 @@
 package com.example.aicode.config;
 
 import com.example.aicode.security.CustomUserDetailsService;
+import com.example.aicode.security.oauth.OAuth2AuthenticationSuccessHandler;
+import com.example.aicode.security.auth.CustomOAuth2UserService;
+import com.example.aicode.security.auth.OAuth2AuthenticationFailureHandler;
 import com.example.aicode.security.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -10,7 +13,6 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.web.SecurityFilterChain;
@@ -23,6 +25,9 @@ public class SecurityConfig {
     private final CustomUserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2AuthenticationSuccessHandler successHandler;
+    private final OAuth2AuthenticationFailureHandler failureHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -31,7 +36,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
 
                 .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
 
                 .addFilterBefore(
                         jwtAuthenticationFilter,
@@ -41,11 +46,22 @@ public class SecurityConfig {
 
                         .requestMatchers(
                                 "/api/v1/auth/**",
+                                "/oauth2/**",
+                                "/login/**",
+                                "/error",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
                         ).permitAll()
 
                         .anyRequest().authenticated()
+                )
+
+                .oauth2Login(oauth ->
+                        oauth
+                                .userInfoEndpoint(user ->
+                                        user.userService(customOAuth2UserService))
+                                .successHandler(successHandler)
+                                .failureHandler(failureHandler)
                 )
 
                 .authenticationProvider(authenticationProvider())

@@ -13,4 +13,5 @@ public interface RefreshTokenService {
 
     void revokeAll(User user);
 
+    void saveOrUpdate(User user, String refreshToken);
 }

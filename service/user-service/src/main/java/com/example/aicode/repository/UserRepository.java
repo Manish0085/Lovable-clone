@@ -1,5 +1,6 @@
 package com.example.aicode.repository;
 
+import com.example.aicode.domain.AuthProvider;
 import com.example.aicode.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -18,4 +19,5 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     boolean existsByUsername(String username);
 
+    Optional<User> findByProviderAndProviderId(AuthProvider provider, String id);
 }

@@ -78,7 +78,29 @@ public class RefreshTokenImpl implements RefreshTokenService {
     }
 
     @Override
+    @Transactional
     public void revokeAll(User user) {
 
+        refreshTokenRepository.findByUser(user)
+                .ifPresent(refreshTokenRepository::delete);
+    }
+
+    @Override
+    @Transactional
+    public void saveOrUpdate(User user, String refreshToken) {
+
+        RefreshToken token = refreshTokenRepository
+                .findByUser(user)
+                .orElse(
+                        RefreshToken.builder()
+                                .user(user)
+                                .build()
+                );
+
+        token.setToken(refreshToken);
+        token.setExpiresAt(jwtService.getRefreshTokenExpiry());
+        token.setRevoked(false);
+
+        refreshTokenRepository.save(token);
     }
 }

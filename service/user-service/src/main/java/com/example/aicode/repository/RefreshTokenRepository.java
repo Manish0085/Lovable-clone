@@ -15,4 +15,5 @@ public interface RefreshTokenRepository
 
     List<RefreshToken> findAllByUser(User user);
 
+    Optional<RefreshToken> findByUser(User user);
 }
